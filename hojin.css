@@ -1,0 +1,15 @@
+*{
+    border: 1px solid red;
+}
+
+.left {
+    float: left;
+    height: 100px;
+    display: block;
+}
+
+.right {
+    float: right;
+    height: 100px;
+    display: block;
+}
