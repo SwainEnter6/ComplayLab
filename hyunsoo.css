@@ -5,6 +5,42 @@
 }
 /* 모든 요소 초기화 */
 
-.header {
-    width: 1280*120;
+.header_img {
+    position: relative;
+}
+.header_text {
+    position: absolute;
+    top: 85%;
+    left: 10%;
+    transform: translate( -50%, -50% );
+    padding: 10px;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 2.2rem;
+}
+
+.textBox {
+    position: relative;
+}
+
+.ballon_text {
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 2.2rem;
+}
+
+.ballon_text_sub {
+    position: absolute;
+    top: 60%;
+    left: 15.5%;
+}
+.carrot {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 480px; 
+    height: 480px;
 }
