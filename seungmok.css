@@ -4,16 +4,6 @@
     box-sizing: border-box;
 }
 /* 모든 요소 초기화 */
-.main_img {
-    position: relative;
-}
-.main_img_text {
-    position: absolute;
-    top: 85%;
-    left: 10%;
-    transform: translate( -50%, -50% );
-    padding: 10px;
-    border-radius: 10px;
-    background: #fff;
-    font-size: 2.2rem;
+.container {
+    width: 1200px;
 }
