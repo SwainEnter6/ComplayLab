@@ -16,15 +16,33 @@
         </div>
         <div class="arrow">
             <div class="arrowright">
-                <img src="imgs/arrowright.png" alt="Rarrowimg">
+                <img src="imgs/arrowright.png" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
             </div>
             <div class="arrowleft">
-                <img src="imgs/arrowleft.png" alt="Larrowimg">
+                <img src="imgs/arrowleft.png" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
             </div>
         </div>
-
-
     </div>
-     
+
+    <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
+    </div>
+
+    <script>
+        function drag(event){
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function allowDrop(event){
+            event.preventDefault();
+        }
+
+        function drop(event){
+            event.preventDefault(); 
+            var data = event.dataTransfer.getData("text");
+            var img = document.getElementById(data);
+            var dropArea = document.querySelector('.drop-area');
+            dropArea.appendChild(img);
+        }
+    </script>
 </body>
 </html>

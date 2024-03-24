@@ -33,7 +33,7 @@ body {
     width: 200px;
     height: 200px;
     position: absolute;
-    transform: translate(-50%, -50%, -50%, -50%); 
+    cursor: pointer;
     z-index: 2;
 }
 
@@ -49,4 +49,15 @@ body {
 
 .imgs .arrow img:hover{
     scale: 1.1;
+}
+
+.drop-area{
+    border: 1px solid red;
+    width:8%;
+    height: 12%;
+    position: absolute;
+    top: 370px;
+    left: 700px;
+    z-index: 1;
+    background-color: rgba(255,255,255,0.5);
 }
