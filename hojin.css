@@ -30,8 +30,8 @@ body {
 }
 
 .imgs .arrow img{
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     position: absolute;
     cursor: pointer;
     z-index: 2;
