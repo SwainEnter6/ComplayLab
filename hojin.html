@@ -22,10 +22,11 @@
                 <img src="imgs/arrowleft.png" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
             </div>
         </div>
+        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
+        </div>
     </div>
 
-    <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
-    </div>
+    
 
     <script>
         function drag(event){
