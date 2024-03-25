@@ -30,10 +30,10 @@ body {
 }
 
 .imgs .arrow img{
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     position: absolute;
-    transform: translate(-50%, -50%, -50%, -50%); 
+    cursor: pointer;
     z-index: 2;
 }
 
@@ -49,4 +49,15 @@ body {
 
 .imgs .arrow img:hover{
     scale: 1.1;
+}
+
+.drop-area{
+    border: 1px solid red;
+    width:100px;
+    height: 100px;
+    position: absolute;
+    top: 240px;
+    left: 300px;
+    z-index: 1;
+    background-color: rgba(255,255,255,0.5);
 }
