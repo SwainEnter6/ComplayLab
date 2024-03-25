@@ -1,0 +1,63 @@
+body {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 1000px; 
+    margin: 0; 
+    position: relative;
+    
+}
+
+.imgs {
+    text-align: center;
+    position: absolute;
+}
+
+.imgs .main img {
+    width: 1040px; 
+    height: 720px; 
+    z-index: 1;
+}
+
+.imgs .lemon img{
+    width: 100px;
+    height: 100px;
+    top: 300px;
+    left: 160px; /* 160 340 525 705 */
+    position: absolute; 
+    transform: translate(-50%, -50%); 
+    z-index: 2;
+}
+
+.imgs .arrow img{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.imgs .arrow .arrowright img{
+    top: 510px;
+    left: 320px;
+}
+
+.imgs .arrow .arrowleft img{
+    top: 510px;
+    left: 520px;
+}
+
+.imgs .arrow img:hover{
+    scale: 1.1;
+}
+
+.drop-area{
+    /* border: 1px solid red; */
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    top: 240px;
+    left: 300px;
+    z-index: 3;
+    background-color: rgba(255,255,255,0.5);
+}
