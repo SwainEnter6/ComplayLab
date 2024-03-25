@@ -1,0 +1,36 @@
+body > div:nth-child(1) {
+    width: 1040px; 
+    height: 720px; 
+    border: 1px solid red;
+
+}
+
+body > div:nth-child(2) {
+    width: 1040px; 
+    height: 720px; 
+    border: 1px solid blue;
+}
+
+body > div:nth-child(3){
+    width: 1040px; 
+    height: 720px; 
+    border: 1px solid green;
+}
+
+
+.fdiv2 div > .lemon{
+    width: 150px; 
+    height: 200px; 
+}
+
+.fdiv3 div > img {
+    width: 80px; 
+    height: 80px; 
+}
+
+
+body > div > img {
+    width: 1040px; 
+    height: 720px; 
+
+}
