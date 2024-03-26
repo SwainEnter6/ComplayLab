@@ -34,3 +34,15 @@ body > div > img {
     height: 720px; 
 
 }
+.container {
+    width: 500px;
+    height: 120px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #b5c1dc57;
+    border-radius: 8px;
+}
+
+.container > img {
+    margin: 20px;
+}

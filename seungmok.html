@@ -19,34 +19,62 @@
     </div>
 
     <div class="fdiv3">
-        <div class="arrowright">
-            <img src="./imgs/arrowright2.jpg" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
+        <div class="container">
+            
         </div>
-        <div class="arrowleft">
-            <img src="./imgs/arrowleft2.jpg" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
-        </div>
-        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <div class="container">
+            <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
+            <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
         </div>
     </div>
 
-    
-<!-- 
     <script>
-        function drag(event){
-            event.dataTransfer.setData("text", event.target.id);
-        }
+    const draggables = document.querySelectorAll(".draggable");
+const containers = document.querySelectorAll(".container");
 
-        function allowDrop(event){
-            event.preventDefault();
-        }
+draggables.forEach(draggable => {
+    draggable.addEventListener("dragstart", () => {
+        draggable.classList.add("dragging");
+    });
 
-        function drop(event){
-            event.preventDefault(); 
-            var data = event.dataTransfer.getData("text");
-            var img = document.getElementById(data);
-            var dropArea = document.querySelector('.drop-area');
-            dropArea.appendChild(img);
+    draggable.addEventListener("dragend", () => {
+        draggable.classList.remove("dragging");
+    });
+});
+
+containers.forEach(container => {
+    container.addEventListener("dragover", e => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(container, e.clientX);
+        const draggable = document.querySelector(".dragging");
+        if (afterElement === undefined) {
+            container.appendChild(draggable);
+        } else {
+            if (afterElement !== draggable) {
+                container.insertBefore(draggable, afterElement.nextSibling); // 수정된 부분: afterElement 뒤에 삽입
+            }
         }
-    </script> -->
+    });
+});
+
+function getDragAfterElement(container, x) {
+    const draggableElements = [
+        ...container.querySelectorAll(".draggable:not(.dragging)"),
+    ];
+
+    return draggableElements.reduce(
+        (closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = x - box.left - box.width / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        },
+        { offset: Number.NEGATIVE_INFINITY },
+    ).element;
+}
+    </script>
 </body>
 </html>
