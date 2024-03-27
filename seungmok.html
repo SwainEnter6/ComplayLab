@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <script>
+    <!-- <script>
     const draggables = document.querySelectorAll(".draggable"); 
     //클래스가 "draggable"인 모든 요소를 선택. 드래그 가능한 요소들을 나타냄.
     const containers = document.querySelectorAll(".container");
@@ -81,6 +81,55 @@
             { offset: Number.NEGATIVE_INFINITY },
         ).element;
     }
+    </script> -->
+    <script>
+        const draggables = document.querySelectorAll(".draggable");
+        const containers = document.querySelectorAll(".container");
+    
+        draggables.forEach(draggable => {
+            draggable.addEventListener("dragstart", () => {
+                draggable.classList.add("dragging");
+            });
+    
+            draggable.addEventListener("dragend", () => {
+                draggable.classList.remove("dragging");
+            });
+        });
+    
+        containers.forEach(container => {
+            container.addEventListener("dragover", e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(container, e.clientX);
+                const draggable = document.querySelector(".dragging");
+                const existingDraggable = container.querySelector(".draggable:not(.dragging)");
+                if (!existingDraggable) {
+                    if (afterElement === undefined) {
+                        container.appendChild(draggable);
+                    } else if (afterElement !== draggable) {
+                        container.insertBefore(draggable, afterElement.nextSibling);
+                    }
+                }
+            });
+        });
+    
+        function getDragAfterElement(container, x) {
+            const draggableElements = [
+                ...container.querySelectorAll(".draggable:not(.dragging)"),
+            ];
+    
+            return draggableElements.reduce(
+                (closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = x - box.left - box.width / 2;
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                },
+                { offset: Number.NEGATIVE_INFINITY },
+            ).element;
+        }
     </script>
 </body>
 </html>
