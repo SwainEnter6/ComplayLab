@@ -55,3 +55,43 @@ body > div > img {
     text-align: center;
     margin: 10px;
 }
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .fdiv1, .fdiv2, .fdiv3 {
+    width: 33.33%;
+    height: 100vh;
+  }
+  
+  .fdiv2 .draggable {
+    margin: 10px;
+  }
+  
+  .container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 100px;
+  }
+  
+  .container img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .dragging {
+    opacity: 0.5;
+  }
+
+.animated {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .container:hover {
+    background-color: #ccc;
+  }
+  
+  .container.hovered {
+    background-color: #ddd;
+  }
