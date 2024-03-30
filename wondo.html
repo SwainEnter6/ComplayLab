@@ -2,85 +2,53 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>드래그 앤 드롭</title>
     <link rel="stylesheet" href="wondo.css">
 </head>
 <body>
 
-    <div class="fdiv1">
-        <img src="./imgs/main.png" alt="mainimg">
-    </div>
+<div id="source-box">
+    <!-- 드래그 가능한 이미지들 -->
+    <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true" data-image="image1">
+    <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true" data-image="image2">
+</div>
 
-    <div class="fdiv2">
-        <div>
-            <img class = "lemon" src="./imgs/lemon.png">
-        </div>
-    </div>
+<!-- 드롭 타겟이 될 박스들 -->
+<div class="target-box" id="box1"></div>
+<div class="target-box" id="box2"></div>
+<div class="target-box" id="box3"></div>
+<div class="target-box" id="box4"></div>
 
-    <div class="fdiv3">
-        <div class="mouse-container">
-            <div class="container"></div>
-            <div class="container"></div>
-            <div class="container"></div>
-            <div class="container"></div>
-        </div>
-        <div class="container">
-            <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
-            <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
-        </div>
-    </div>
-
-    <script>
-    const draggables = document.querySelectorAll(".draggable"); 
-    //클래스가 "draggable"인 모든 요소를 선택. 드래그 가능한 요소들을 나타냄.
-    const containers = document.querySelectorAll(".container");
-    //클래스가 "container"인 모든 요소를 선택. 드래그 가능한 요소를 포함하는 컨테이너를 나타냄.
-
-    draggables.forEach(draggable => { //각 드래그 가능한 요소에 대해 반복문을 실행.
-        draggable.addEventListener("dragstart", () => { //"dragstart" 이벤트가 발생했을 때 실행할 함수를 지정.
-            draggable.classList.add("dragging"); //"dragging" 클래스를 추가. 드래그 중임을 표시하는 데 사용.
-    });
-
-        draggable.addEventListener("dragend", () => { //"dragend" 이벤트가 발생했을 때 실행할 함수를 지정.
-            draggable.classList.remove("dragging"); //"dragging" 클래스를 제거. 드래그 중이 아님을 표시하는 데 사용
+<script>
+    document.querySelectorAll('.draggable').forEach(img => {
+        img.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('image/id', e.target.dataset.image);// 드래그 시작 시, 이미지 ID를 데이터 전송 객체에 설정
         });
     });
 
-    containers.forEach(container => {
-        container.addEventListener("dragover", e => { //"dragover" 이벤트가 발생했을 때 실행할 함수를 지정.
-            e.preventDefault(); //이벤트의 기본 동작을 중단시킴. 드래그 중인 요소를 컨테이너 위로 이동할 때 브라우저가 수행하는 기본 동작을 방지.
-            const afterElement = getDragAfterElement(container, e.clientX); 
-            //드래그 중인 요소가 컨테이너 내에서 어느 위치에 있는지를 결정하는 함수인 getDragAfterElement를 호출하여 해당 위치를 계산. e.clientX는 마우스의 x 좌표를 나타냄.
-            const draggable = document.querySelector(".dragging");
-            //현재 드래그 중인 요소를 선택. 드래그 중에만 해당 클래스를 가지고 있으므로, .dragging 선택자를 사용하여 선택됩니다.
-            if (afterElement === undefined) { 
-                //컨테이너 내에서 드래그 가능한 요소를 삽입할 위치를 결정하는데 사용되는 afterElement가 undefined인 경우를 확인. 드래그 가능한 요소를 컨테이너의 맨 끝에 추가.
-                container.appendChild(draggable);
-            }else if (afterElement !== draggable) { 
-                container.insertBefore(draggable, afterElement.nextSibling); //draggable 요소를 afterElement의 다음 형제 요소로 삽입. 이를 통해 요소가 원하는 위치에 삽입.
+    document.querySelectorAll('.target-box').forEach(box => {
+        box.addEventListener('dragover', (e) => {
+            e.preventDefault(); // 드래그 오버 이벤트의 기본 동작을 방지하여 드롭 이벤트를 허용
+        });
+
+        box.addEventListener('drop', (e) => {
+            e.preventDefault();  // 드롭 이벤트의 기본 동작을 방지
+            const imageId = e.dataTransfer.getData('image/id'); // 드롭 이벤트 시, 데이터 전송 객체에서 이미지 ID 가져오기
+            const originalImage = document.querySelector(`img[data-image="${imageId}"]`); // 해당 ID를 가진 원본 이미지 요소 선택
+            
+            // 기존에 박스에 이미지가 있으면 제거하는 로직
+            if (box.childNodes.length > 0) {
+                box.removeChild(box.childNodes[0]); // 첫 번째 자식 이미지 제거
             }
+            
+            // 복사 된 이미지를 대상 박스에 추가하는 로직
+            const clonedImage = originalImage.cloneNode(true); // 원본 이미지를 복제
+            clonedImage.addEventListener('click', function() {
+                box.removeChild(clonedImage); // 클릭 시 이미지 제거
+            });
+            box.appendChild(clonedImage); // 복제된 이미지를 대상 박스에 추가
         });
     });
-
-    function getDragAfterElement(container, x) {
-        const draggableElements = [
-            ...container.querySelectorAll(".draggable:not(.dragging)"),
-        ];
-
-        return draggableElements.reduce(
-            (closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = x - box.left - box.width / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            },
-            { offset: Number.NEGATIVE_INFINITY },
-        ).element;
-    }
-    </script>
+</script>
 </body>
 </html>

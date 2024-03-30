@@ -1,57 +1,21 @@
-body > div:nth-child(1) {
-    width: 1040px; 
-    height: 720px; 
-    border: 1px solid red;
-
+#source-box {
+    border: 2px dashed gray;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
-body > div:nth-child(2) {
-    width: 1040px; 
-    height: 720px; 
-    border: 1px solid blue;
-}
-
-body > div:nth-child(3){
-    width: 1040px; 
-    height: 720px; 
-    border: 1px solid green;
-}
-
-
-.fdiv2 div > .lemon{
-    width: 150px; 
-    height: 200px; 
-}
-
-.fdiv3 div > img {
-    width: 80px; 
-    height: 80px; 
-}
-
-
-body > div > img {
-    width: 1040px; 
-    height: 720px; 
-
-}
-.fdiv3 .mouse-container {
-    display: flex;
-}
-.fdiv3 .mouse-container .container {
+.target-box {
     width: 100px;
     height: 100px;
-    margin-bottom: 30px;
+    border: 2px solid blue;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+    position: relative;
 }
-.fdiv3 .container {
-    text-align: center;
-    width: 480px;
-    height: 120px;
-    margin: 10px;
-    padding: 10px;
-    background-color: #b5c1dc57;
-    border-radius: 8px;
-}
-.fdiv3 .container img {
-    text-align: center;
-    margin: 10px;
+
+img.draggable {
+    width: 80px;
+    height: 80px;
+    cursor: move;
 }
