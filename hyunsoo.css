@@ -1,46 +1,57 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-/* 모든 요소 초기화 */
+body > div:nth-child(1) {
+    width: 1040px; 
+    height: 720px; 
+    border: 1px solid red;
 
-.header_img {
-    position: relative;
 }
-.header_text {
-    position: absolute;
-    top: 85%;
-    left: 10%;
-    transform: translate( -50%, -50% );
+
+body > div:nth-child(2) {
+    width: 1040px; 
+    height: 720px; 
+    border: 1px solid blue;
+}
+
+body > div:nth-child(3){
+    width: 1040px; 
+    height: 720px; 
+    border: 1px solid green;
+}
+
+
+.fdiv2 div > .lemon{
+    width: 150px; 
+    height: 200px; 
+}
+
+.fdiv3 div > img {
+    width: 80px; 
+    height: 80px; 
+}
+
+
+body > div > img {
+    width: 1040px; 
+    height: 720px; 
+
+}
+.fdiv3 .mouse-container {
+    display: flex;
+}
+.fdiv3 .mouse-container .container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 30px;
+}
+.fdiv3 .container {
+    text-align: center;
+    width: 480px;
+    height: 120px;
+    margin: 10px;
     padding: 10px;
-    border-radius: 10px;
-    background: #fff;
-    font-size: 2.2rem;
+    background-color: #b5c1dc57;
+    border-radius: 8px;
 }
-
-.textBox {
-    position: relative;
-}
-
-.ballon_text {
-    position: absolute;
-    top: 10%;
-    left: 15%;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 2.2rem;
-}
-
-.ballon_text_sub {
-    position: absolute;
-    top: 60%;
-    left: 15.5%;
-}
-.carrot {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    width: 480px; 
-    height: 480px;
+.fdiv3 .container img {
+    text-align: center;
+    margin: 10px;
 }

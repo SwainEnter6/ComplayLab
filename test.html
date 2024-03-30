@@ -1,124 +1,29 @@
-<!-- <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="test.css">
-</head>
-<script>
-    function drag(event){
-        event.dataTransfer.setData("text", event.target.id);
-    }
-
-    function allowDrop(event){
-        event.preventDefault();
-    }
-
-    function drop(event){
-        event.preventDefault(); 
-        var data = event.dataTransfer.getData("text");
-        var img = document.getElementById(data);
-        var dropArea = document.querySelector('.drop-area');
-        dropArea.appendChild(img);
-    }
-</script>
-<body>
-    <div class="imgs">
-        <div class="main">
-            <img src="imgs/main.png" alt="mainimg">
-        </div>
-        <div class="lemon">
-            <img src="imgs/lemon.png" alt="lemonimg">
-        </div>
-        <div class="arrow">
-            <div class="arrowright">
-                <img src="imgs/arrowright.png" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
-            </div>
-            <div class="arrowleft">
-                <img src="imgs/arrowleft.png" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
-            </div>
-        </div>
-        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
-        </div>
-    </div>
-</body>
-</html> -->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="test.css">
+    <title>Document</title>
 </head>
-<script>
-    // function drag(event){
-    //     event.dataTransfer.setData("text", event.target.id);
-    // }
-
-    // function allowDrop(event){
-    //     event.preventDefault();
-    // }
-
-    // function drop(event){
-    //     event.preventDefault(); 
-    //     var data = event.dataTransfer.getData("text");
-    //     var img = document.getElementById(data);
-    //     var dropArea = document.querySelector('.drop-area');
-    //     dropArea.appendChild(img);
-    // }
-    function dragStart(event) {
-        event.dataTransfer.setData("text", event.target.id); // or "text/plain"
-    }
-
-//Events fired on the drop target
-
-    function dragEnter(event) {
-        if(event.target.classList && event.target.classList.contains("droppable") && !event.target.classList.contains("dropped")) {
-        event.target.classList.add("droppable-hover");
-        }
-    }
-
-    function dragOver(event) {
-        if(event.target.classList && event.target.classList.contains("droppable") && !event.target.classList.contains("dropped")) {
-        event.preventDefault();
-        }
-    }
-
-function dragLeave(event) {
-  if(event.target.classList && event.target.classList.contains("droppable") && !event.target.classList.contains("dropped")) {
-    event.target.classList.remove("droppable-hover");
-  }
-}
-
-function drop(event) {
-  event.preventDefault();
-  event.target.classList.remove("droppable-hover");
-  const draggableElementBrand = event.dataTransfer.getData("text");
-  const droppableElementBrand = event.target.getAttribute("data-brand");
-  const isCorrectMatching = draggableElementBrand===droppableElementBrand;
-
-}
-</script>
 <body>
-    <div class="imgs">
-        <div class="main">
-            <img src="imgs/main.png" alt="mainimg">
-        </div>
-        <div class="lemon">
-            <img src="imgs/lemon.png" alt="lemonimg">
-        </div>
-        <div class="arrow">
-            <div class="arrowright">
-                <img src="imgs/arrowright.png" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
-            </div>
-            <div class="arrowleft">
-                <img src="imgs/arrowleft.png" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
-            </div>
-        </div>
-        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
-        </div>
+    <div class="container">
+      <button class="draggable" draggable="true">🦊</button>
+      <button class="draggable" draggable="true">🐸</button>
     </div>
-</body>
+    <div class="container">
+        <button class="draggable" draggable="true">
+            <img class="arrowleft" src = "imgs/arrowleft.png">
+        </button>
+        <button class="draggable" draggable="true">
+            <img class="arrowlight" src ="imgs/arrowright.png">
+        </button>
+    </div>
+    <h1>-------------------------------------------</h1>
+    <div class="container">
+        <button class="draggable" draggable="true">
+            dd
+        </button>
+    </div>
+    <script src="main.js"></script>
+  </body>
 </html>
