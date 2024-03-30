@@ -5,6 +5,7 @@ body {
     height: 1000px; 
     margin: 0; 
     position: relative;
+    
 }
 
 .imgs {
@@ -12,55 +13,53 @@ body {
     position: absolute;
 }
 
-.imgs .main img {
+body > div:nth-child(3){
     width: 1040px; 
     height: 720px; 
-    z-index: 1;
+    border: 1px solid green;
 }
 
-.imgs .lemon img{
+
+.fdiv2 div > .lemon{
+    width: 150px; 
+    height: 200px; 
+}
+
+.fdiv3 div > img {
+    width: 80px; 
+    height: 80px; 
+}
+
+
+body > div > img {
+    width: 1040px; 
+    height: 720px; 
+
+}
+.fdiv3 .mouse-container {
+    display: flex;
+}
+.fdiv3 .mouse-container .container {
     width: 100px;
     height: 100px;
-    top: 300px;
-    left: 160px; /* 160 340 525 705 */
-    position: absolute; 
-    transform: translate(-50%, -50%); 
-    z-index: 2;
+    margin-bottom: 30px;
 }
 
-.imgs .arrowright img{
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    cursor: pointer;
-    transform: translate(-50%, -50%, -50%, -50%); 
-    z-index: 3;
-    top: 510px;
-    left: 320px;
+.fdiv3 .container {
+    text-align: center;
+    width: 480px;
+    height: 120px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #b5c1dc57;
+    border-radius: 8px;
 }
 
-.imgs .arrowleft img{
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    cursor: pointer;
-    transform: translate(-50%, -50%, -50%, -50%); 
-    z-index: 3;
-    top: 510px;
-    left: 520px;
+.fdiv3 .container .image-container-right img {
+    text-align: center;
+    margin: 10px;
 }
-
-/*.imgs .arrow img:hover{
-    scale: 1.1;
-}*/
-
-.drop-area{
-    border: 1px solid red;
-    width:100px;
-    height: 100px;
-    position: absolute;
-    top: 240px;
-    left: 300px;
-    z-index: 2;
-    background-color: rgba(255,255,255,0.5);
+.fdiv3 .container .image-container-left img {
+    text-align: center;
+    margin: 10px;
 }

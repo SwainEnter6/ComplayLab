@@ -4,43 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <link rel="stylesheet" href="hojin.css">
+    <link rel="stylesheet" href="seungmok.css">
 </head>
 <body>
-    <div class="imgs">
-        <div class="main">
-            <img src="imgs/main.png" alt="mainimg">
-        </div>
-        <div class="lemon">
-            <img src="imgs/lemon.png" alt="lemonimg">
-        </div>
-        <div class="arrowright">
-            <img src="imgs/arrowright2.jpg" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
-        </div>
-        <div class="arrowleft">
-            <img src="imgs/arrowleft2.jpg" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
-        </div>
-        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
+
+    <div class="fdiv1">
+        <img src="./imgs/main.png" alt="mainimg">
+    </div>
+
+    <div class="fdiv2">
+        <div>
+            <img class = "lemon" src="./imgs/lemon.png">
         </div>
     </div>
 
-    
+    <div class="fdiv3">
+        <div class="mouse-container">
+            <div class="container"></div>
+            <div class="container"></div>
+            <div class="container"></div>
+            <div class="container"></div>
+        </div>
+        <div class="container">
+            <div class="image-container">
+                <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
+                <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
+            </div>
+    </div>
 
     <script>
-        function drag(event){
-            event.dataTransfer.setData("text", event.target.id);
-        }
-
-        function allowDrop(event){
-            event.preventDefault();
-        }
-
-        function drop(event){
-            event.preventDefault(); 
-            var data = event.dataTransfer.getData("text");
-            var img = document.getElementById(data);
-            var dropArea = document.querySelector('.drop-area');
-            dropArea.appendChild(img);
+        const draggables = document.querySelectorAll(".draggable");
+        const containers = document.querySelectorAll(".container");
+    
+        draggables.forEach(draggable => {
+            draggable.addEventListener("dragstart", () => {
+                draggable.classList.add("dragging");
+            });
+    
+            draggable.addEventListener("dragend", () => {
+                draggable.classList.remove("dragging");
+            });
+        });
+    
+        containers.forEach(container => {
+            container.addEventListener("dragover", e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(container, e.clientX);
+                const draggable = document.querySelector(".dragging");
+                const existingDraggable = container.querySelector(".draggable:not(.dragging)");
+                if (!existingDraggable) {
+                    if (afterElement === undefined) {
+                        container.appendChild(draggable);
+                    } else if (afterElement !== draggable) {
+                        container.insertBefore(draggable, afterElement.nextSibling);
+                    }
+                }
+            });
+        });
+    
+        function getDragAfterElement(container, x) {
+            const draggableElements = [
+                ...container.querySelectorAll(".draggable:not(.dragging)"),
+            ];
+    
+            return draggableElements.reduce(
+                (closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = x - box.left - box.width / 2;
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                },
+                { offset: Number.NEGATIVE_INFINITY },
+            ).element;
         }
     </script>
 </body>
