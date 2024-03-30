@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="seokhyeon.css">
+</head>
+<body>
+
+    <div class="fdiv1">
+        <img src="../imgs/main.png" alt="mainimg">
+    </div>
+
+    <div class="fdiv2">
+        <div>
+            <img class = "lemon" src="../imgs/lemon.png">
+        </div>
+    </div>
+
+    <div class="fdiv3">
+
+        <div class="arrowright">
+            <img src="../imgs/arrowright2.jpg" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
+        </div>
+        <div class="arrowleft">
+            <img src="../imgs/arrowleft2.jpg" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
+        </div>
+        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
+        </div>
+    </div>
+
+    
+<!-- 
+    <script>
+        function drag(event){
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function allowDrop(event){
+            event.preventDefault();
+        }
+
+        function drop(event){
+            event.preventDefault(); 
+            var data = event.dataTransfer.getData("text");
+            var img = document.getElementById(data);
+            var dropArea = document.querySelector('.drop-area');
+            dropArea.appendChild(img);
+        }
+    </script> -->
+</body>
+</html>
