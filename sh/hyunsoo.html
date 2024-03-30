@@ -20,12 +20,12 @@
     
       <div class="fdiv3">
         <div class="mouse-container">
-          <div class="container"></div>
-          <div class="container"></div>
-          <div class="container"></div>
-          <div class="container"></div>
+          <div class="container" id="container1"></div>
+          <div class="container" id="container2"></div>
+          <div class="container" id="container3"></div>
+          <div class="container" id="container4"></div>
         </div>
-        <div class="container">
+        <div class="container" id="origin_con">
           <img src="../imgs/arrowleft2.jpg" class="draggable" draggable="true">
           <img src="../imgs/arrowright2.jpg" class="draggable" draggable="true">
         </div>
@@ -81,34 +81,47 @@ containerEls.forEach(containerEl => {
   });
 });
 
-// 클릭 시 이미지 개수 증가 및 처음 컨테이너에 복사
-const fdiv2El = document.querySelector(".fdiv2");
-fdiv2El.addEventListener("click", e => {
+// 드래그 가능 범위 제한 및 드롭 후 이미지 생성
+const originConEl = document.querySelector("#origin_con");
+originConEl.addEventListener("dragstart", e => {
   const draggableEl = e.target.closest(".draggable");
 
   if (draggableEl) {
-    const clonedElement = draggableEl.cloneNode(true);
-
-    clonedElement.classList.remove("dragging");
-    clonedElement.draggable = false;
-
-    draggableEl.parentNode.insertBefore(clonedElement, draggableEl);
-
-    // 처음 컨테이너에 이미지 복사
-    const fdiv1El = document.querySelector(".fdiv1");
-    fdiv1El.appendChild(clonedElement.cloneNode(true));
+    e.dataTransfer.setData("text/plain", draggableEl.id);
   }
 });
 
-// 드래그 기능 추가
-draggableEls.forEach(draggableEl => {
-  draggableEl.addEventListener("mousedown", () => {
-    draggableEl.classList.add("draggable-active");
-  });
+const mouseContainerEl = document.querySelector(".mouse-container");
+mouseContainerEl.addEventListener("dragover", e => {
+  e.preventDefault();
 
-  draggableEl.addEventListener("mouseup", () => {
-    draggableEl.classList.remove("draggable-active");
-  });
+  const draggableId = e.dataTransfer.getData("text/plain");
+  const draggableEl = document.getElementById(draggableId);
+
+  if (draggableEl) {
+    const afterElement = getDragAfterElement(mouseContainerEl, e.clientX);
+
+    if (afterElement === undefined) {
+      mouseContainerEl.appendChild(draggableEl);
+    } else if (afterElement !== draggableEl) {
+      mouseContainerEl.insertBefore(draggableEl, afterElement.nextSibling);
+    }
+  }
+});
+
+mouseContainerEl.addEventListener("drop", e => {
+  e.preventDefault();
+
+  const draggableId = e.dataTransfer.getData("text/plain");
+  const draggableEl = document.getElementById(draggableId);
+
+  if (draggableEl) {
+    const clonedElement = draggableEl.cloneNode(true);
+    clonedElement.classList.remove("dragging");
+    clonedElement.draggable = false;
+
+    e.target.appendChild(clonedElement);
+  }
 });
 
 // 애니메이션 추가
