@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="hyunsoo.css">
+</head>
+<body>
+
+    <div class="fdiv1">
+        <img src="../imgs/main.png" alt="mainimg">
+      </div>
+    
+      <div class="fdiv2">
+        <div>
+          <img class="lemon" src="../imgs/lemon.png">
+        </div>
+      </div>
+    
+      <div class="fdiv3">
+        <div class="mouse-container">
+          <div class="container" id="container1"></div>
+          <div class="container" id="container2"></div>
+          <div class="container" id="container3"></div>
+          <div class="container" id="container4"></div>
+        </div>
+        <div class="container" id="origin_con">
+          <img src="../imgs/arrowleft2.jpg" class="draggable" draggable="true">
+          <img src="../imgs/arrowright2.jpg" class="draggable" draggable="true">
+        </div>
+      </div>
+
+      
+    <script>
+const draggableEls = document.querySelectorAll(".draggable");
+const containerEls = document.querySelectorAll(".container");
+
+function getDragAfterElement(containerEl, x) {
+  const draggableElements = [...containerEl.querySelectorAll(".draggable:not(.dragging)")];
+
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = x - box.left - box.width / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+draggableEls.forEach(draggableEl => {
+  draggableEl.addEventListener("dragstart", () => {
+    draggableEl.classList.add("dragging");
+    const clonedElement = draggableEl.cloneNode(true);
+
+    clonedElement.classList.remove("dragging");
+    clonedElement.draggable = false;
+
+    draggableEl.parentNode.insertBefore(clonedElement, draggableEl);
+  });
+
+  draggableEl.addEventListener("dragend", () => {
+    draggableEl.classList.remove("dragging");
+  });
+});
+
+containerEls.forEach(containerEl => {
+  containerEl.addEventListener("dragover", e => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(containerEl, e.clientX);
+    const draggableEl = document.querySelector(".dragging");
+
+    if (afterElement === undefined) {
+      containerEl.appendChild(draggableEl);
+    } else if (afterElement !== draggableEl) {
+      containerEl.insertBefore(draggableEl, afterElement.nextSibling);
+    }
+  });
+});
+
+// 드래그 가능 범위 제한 및 드롭 후 이미지 생성
+const originConEl = document.querySelector("#origin_con");
+originConEl.addEventListener("dragstart", e => {
+  const draggableEl = e.target.closest(".draggable");
+
+  if (draggableEl) {
+    e.dataTransfer.setData("text/plain", draggableEl.id);
+  }
+});
+
+const mouseContainerEl = document.querySelector(".mouse-container");
+mouseContainerEl.addEventListener("dragover", e => {
+  e.preventDefault();
+
+  const draggableId = e.dataTransfer.getData("text/plain");
+  const draggableEl = document.getElementById(draggableId);
+
+  if (draggableEl) {
+    const afterElement = getDragAfterElement(mouseContainerEl, e.clientX);
+
+    if (afterElement === undefined) {
+      mouseContainerEl.appendChild(draggableEl);
+    } else if (afterElement !== draggableEl) {
+      mouseContainerEl.insertBefore(draggableEl, afterElement.nextSibling);
+    }
+  }
+});
+
+mouseContainerEl.addEventListener("drop", e => {
+  e.preventDefault();
+
+  const draggableId = e.dataTransfer.getData("text/plain");
+  const draggableEl = document.getElementById(draggableId);
+
+  if (draggableEl) {
+    const clonedElement = draggableEl.cloneNode(true);
+    clonedElement.classList.remove("dragging");
+    clonedElement.draggable = false;
+
+    e.target.appendChild(clonedElement);
+  }
+});
+
+// 애니메이션 추가
+const draggableElements = document.querySelectorAll(".draggable");
+draggableElements.forEach(draggableEl => {
+  draggableEl.addEventListener("dragstart", () => {
+    draggableEl.classList.add("animated");
+  });
+
+  draggableEl.addEventListener("dragend", () => {
+    draggableEl.classList.remove("animated");
+  });
+});
+
+containers.forEach(containerEl => {
+  containerEl.addEventListener("dragover", () => {
+    containerEl.classList.add("hovered");
+  });
+
+  containerEl.addEventListener("dragleave", () => {
+    containerEl.classList.remove("hovered");
+  });
+});
+
+
+
+    </script>
+</body>
+</html>
