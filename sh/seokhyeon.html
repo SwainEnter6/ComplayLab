@@ -20,34 +20,91 @@
 
     <div class="fdiv3">
 
-        <div class="arrowright">
-            <img src="../imgs/arrowright2.jpg" alt="Rarrowimg" draggable="true" ondragstart="drag(event)">
+        <div id="source-box"> 
+            <!-- 드래그 가능한 이미지들 -->
+            <img src="../imgs/arrowleft2.jpg" class="draggable" draggable="true" data-image="image1">
+            <img src="../imgs/arrowright2.jpg" class="draggable" draggable="true" data-image="image2">
         </div>
-        <div class="arrowleft">
-            <img src="../imgs/arrowleft2.jpg" alt="Larrowimg" draggable="true" ondragstart="drag(event)">
-        </div>
-        <div class="drop-area" ondragover="allowDrop(event)" ondrop="drop(event)">
-        </div>
+        
+        <!-- 드롭 타겟이 될 박스들 -->
+        <div class="target-box" id="box1"></div>
+        <div class="target-box" id="box2"></div>
+        <div class="target-box" id="box3"></div>
+        <div class="target-box" id="box4"></div>
     </div>
 
     
-<!-- 
+
     <script>
-        function drag(event){
-            event.dataTransfer.setData("text", event.target.id);
-        }
+    document.querySelectorAll('.draggable').forEach(img => {
+        img.addEventListener('dragstart', dragStart);
+    });
+    
+    function dragStart(e) {
+        e.dataTransfer.setData('image/id', e.target.dataset.image);
+        e.dataTransfer.setData('source/id', e.target.parentElement.getAttribute('id') || 'source-box');
+        e.dataTransfer.setData('insideTargetBox', e.target.parentElement.classList.contains('target-box').toString());
+    }
+    
+    document.querySelectorAll('.target-box').forEach(box => {
+        box.addEventListener('dragover', (e) => {
+            e.preventDefault(); // 드래그 오버 이벤트의 기본 동작을 방지하여 드롭 이벤트를 허용
+        });
+    
+        box.addEventListener('drop', (e) => {
+            e.preventDefault(); // 드롭 이벤트의 기본 동작을 방지
+    
+            const imageId = e.dataTransfer.getData('image/id');
+            const sourceId = e.dataTransfer.getData('source/id');
+            const originalImage = document.querySelector(`img[data-image="${imageId}"]`);
+            const isImageFromAnotherBox = sourceId !== box.getAttribute('id');
+            const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
+    
+            if (isImageFromAnotherBox) {
+                let clonedImage;
+                if (sourceId === 'source-box') {
+                    if(box.childNodes.length > 0) {
+                        box.removeChild(box.childNodes[0]);
+                    }
+                    clonedImage = originalImage.cloneNode(true);
+                    clonedImage.draggable = true;
+                    clonedImage.addEventListener('dragstart', dragStart);
+                } else {
+                    clonedImage = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
+                }
+    
+                if (box.childNodes.length > 0) {
+                    const existingImage = box.removeChild(box.childNodes[0]);
+                    document.querySelector(`#${sourceId}`).appendChild(existingImage);
+                }
+                
+                clonedImage.addEventListener('click', function() {
+                    box.removeChild(clonedImage); // 클릭 시 이미지 제거
+                });
+                box.appendChild(clonedImage);
+            }
+        });
+    });
 
-        function allowDrop(event){
-            event.preventDefault();
-        }
+    // 드래그된 이미지가 외부로 드롭될 때 삭제하기 위한 로직 추가
+    document.body.addEventListener('drop', function(e) {
+        e.preventDefault(); // 기본 동작 방지
 
-        function drop(event){
-            event.preventDefault(); 
-            var data = event.dataTransfer.getData("text");
-            var img = document.getElementById(data);
-            var dropArea = document.querySelector('.drop-area');
-            dropArea.appendChild(img);
+        const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
+        if (insideTargetBox) {
+            const imageId = e.dataTransfer.getData('image/id');
+            const sourceId = e.dataTransfer.getData('source/id');
+            
+            const imageToRemove = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
+            if (imageToRemove) {
+                imageToRemove.parentElement.removeChild(imageToRemove);
+            }
         }
-    </script> -->
+    });
+
+    document.body.addEventListener('dragover', function(e) {
+        e.preventDefault(); // 드래그 오버 시 기본 동작 방지
+    });
+    </script>
 </body>
 </html>
