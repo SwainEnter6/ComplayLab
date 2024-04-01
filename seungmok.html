@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="seungmok.css">
+    <style>
+        
+    </style>
 </head>
 <body>
 
@@ -14,122 +17,130 @@
 
     <div class="fdiv2">
         <div>
-            <img class = "lemon" src="./imgs/lemon.png">
+            <img class="lemon" src="./imgs/lemon.png">
         </div>
+        <div class="lemon-box" id="lemon1"></div>
+        <div class="lemon-box" id="lemon2"></div>
+        <div class="lemon-box" id="lemon3"></div>
+        <div class="lemon-box" id="lemon4"></div>
     </div>
 
     <div class="fdiv3">
-        <div class="mouse-container">
-            <div class="container"></div>
-            <div class="container"></div>
-            <div class="container"></div>
-            <div class="container"></div>
+
+        <div id="source-box"> 
+            <!-- 드래그 가능한 이미지들 -->
+            <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true" data-image="image1">
+            <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true" data-image="image2">
         </div>
-        <div class="container">
-            <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true">
-            <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true">
-        </div>
+        
+        <!-- 드롭 타겟이 될 박스들 -->
+        <div class="target-box" id="box1"></div>
+        <div class="target-box" id="box2"></div>
+        <div class="target-box" id="box3"></div>
+        <div class="target-box" id="box4"></div>
     </div>
 
-    <!-- <script>
-    const draggables = document.querySelectorAll(".draggable"); 
-    //클래스가 "draggable"인 모든 요소를 선택. 드래그 가능한 요소들을 나타냄.
-    const containers = document.querySelectorAll(".container");
-    //클래스가 "container"인 모든 요소를 선택. 드래그 가능한 요소를 포함하는 컨테이너를 나타냄.
-
-    draggables.forEach(draggable => { //각 드래그 가능한 요소에 대해 반복문을 실행.
-        draggable.addEventListener("dragstart", () => { //"dragstart" 이벤트가 발생했을 때 실행할 함수를 지정.
-            draggable.classList.add("dragging"); //"dragging" 클래스를 추가. 드래그 중임을 표시하는 데 사용.
-    });
-
-        draggable.addEventListener("dragend", () => { //"dragend" 이벤트가 발생했을 때 실행할 함수를 지정.
-            draggable.classList.remove("dragging"); //"dragging" 클래스를 제거. 드래그 중이 아님을 표시하는 데 사용
+    <script>
+        // 드래그 가능한 이미지들에 대한 dragstart 이벤트 핸들러
+        document.querySelectorAll('.draggable').forEach(img => {
+            img.addEventListener('dragstart', dragStart);
         });
-    });
 
-    containers.forEach(container => {
-        container.addEventListener("dragover", e => { //"dragover" 이벤트가 발생했을 때 실행할 함수를 지정.
-            e.preventDefault(); //이벤트의 기본 동작을 중단시킴. 드래그 중인 요소를 컨테이너 위로 이동할 때 브라우저가 수행하는 기본 동작을 방지.
-            const afterElement = getDragAfterElement(container, e.clientX); 
-            //드래그 중인 요소가 컨테이너 내에서 어느 위치에 있는지를 결정하는 함수인 getDragAfterElement를 호출하여 해당 위치를 계산. e.clientX는 마우스의 x 좌표를 나타냄.
-            const draggable = document.querySelector(".dragging");
-            //현재 드래그 중인 요소를 선택. 드래그 중에만 해당 클래스를 가지고 있으므로, .dragging 선택자를 사용하여 선택됩니다.
-            if (afterElement === undefined) { 
-                //컨테이너 내에서 드래그 가능한 요소를 삽입할 위치를 결정하는데 사용되는 afterElement가 undefined인 경우를 확인. 드래그 가능한 요소를 컨테이너의 맨 끝에 추가.
-                container.appendChild(draggable);
-            }else if (afterElement !== draggable) { 
-                container.insertBefore(draggable, afterElement.nextSibling); //draggable 요소를 afterElement의 다음 형제 요소로 삽입. 이를 통해 요소가 원하는 위치에 삽입.
+        // dragstart 이벤트 핸들러
+        function dragStart(event) {
+            event.dataTransfer.setData('image/id', event.target.dataset.image);
+            event.dataTransfer.setData('source/id', event.target.parentElement.getAttribute('id') || 'source-box');
+            event.dataTransfer.setData('insideTargetBox', event.target.parentElement.classList.contains('target-box').toString());
+        }
+
+        // 각 target-box에 대한 drop 이벤트 핸들러 추가
+        document.querySelectorAll('.target-box').forEach(box => {
+            box.addEventListener('dragover', (e) => {
+                e.preventDefault(); // 드래그 오버 이벤트의 기본 동작을 방지하여 드롭 이벤트를 허용
+            });
+
+            box.addEventListener('drop', (e) => {
+                e.preventDefault(); // 드롭 이벤트의 기본 동작을 방지
+
+                const imageId = e.dataTransfer.getData('image/id');
+                const sourceId = e.dataTransfer.getData('source/id');
+                const originalImage = document.querySelector(`img[data-image="${imageId}"]`);
+                const isImageFromAnotherBox = sourceId !== box.getAttribute('id');
+                const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
+
+                if (isImageFromAnotherBox) {
+                    let clonedImage;
+                    if (sourceId === 'source-box') {
+                        if (box.childNodes.length > 0) {
+                            box.removeChild(box.childNodes[0]);
+                        }
+                        clonedImage = originalImage.cloneNode(true);
+                        clonedImage.draggable = true;
+                        clonedImage.addEventListener('dragstart', dragStart);
+                    } else {
+                        clonedImage = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
+                    }
+
+                    if (box.childNodes.length > 0) {
+                        const existingImage = box.removeChild(box.childNodes[0]);
+                        document.querySelector(`#${sourceId}`).appendChild(existingImage);
+                    }
+
+                    clonedImage.addEventListener('click', function () {
+                        box.removeChild(clonedImage);
+                    });
+
+                    box.appendChild(clonedImage);
+
+                    // 모든 target-box에 하나 이상의 이미지가 있는지 확인하는 코드로 변경
+                    const allBoxesFilled = document.querySelectorAll('.target-box').every(targetBox => targetBox.childNodes.length > 0);
+
+                    // 이미지2가 모든 target-box에 들어간 경우에만 레몬을 움직임
+                    if (imageId === 'image2' && allBoxesFilled) {
+                        moveLemonImages();
+                    }
+                }
+            });
+        });
+
+        // 레몬 이미지를 레몬 박스로 이동시키는 함수
+        function moveLemonImages() {
+            const lemonBoxes = document.querySelectorAll('.lemon-box'); // 레몬 박스들
+            const lemonImage = document.querySelector('.lemon'); // 레몬 이미지
+
+            lemonBoxes.forEach((lemonBox, index) => {
+                const initialLeft = 50 + index * 150; // 초기 X 좌표
+                const targetX = initialLeft + 50; // 이동할 X 좌표 (현재는 50px 우측으로 이동)
+                const animation = setInterval(() => {
+                    if (initialLeft >= targetX) {
+                        clearInterval(animation);
+                    } else {
+                        initialLeft += 1; // 1px씩 이동
+                        lemonImage.style.left = initialLeft + 'px';
+                    }
+                }, 10);
+            });
+        }
+
+        // 드래그된 이미지가 외부로 드롭될 때 삭제하기 위한 로직 추가
+        document.body.addEventListener('drop', function(e) {
+            e.preventDefault(); // 기본 동작 방지
+
+            const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
+            if (insideTargetBox) {
+                const imageId = e.dataTransfer.getData('image/id');
+                const sourceId = e.dataTransfer.getData('source/id');
+
+                const imageToRemove = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
+                if (imageToRemove) {
+                    imageToRemove.parentElement.removeChild(imageToRemove);
+                }
             }
         });
-    });
 
-    function getDragAfterElement(container, x) {
-        const draggableElements = [
-            ...container.querySelectorAll(".draggable:not(.dragging)"),
-        ];
-
-        return draggableElements.reduce(
-            (closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = x - box.left - box.width / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            },
-            { offset: Number.NEGATIVE_INFINITY },
-        ).element;
-    }
-    </script> -->
-    <script>
-        const draggables = document.querySelectorAll(".draggable");
-        const containers = document.querySelectorAll(".container");
-    
-        draggables.forEach(draggable => {
-            draggable.addEventListener("dragstart", () => {
-                draggable.classList.add("dragging");
-            });
-    
-            draggable.addEventListener("dragend", () => {
-                draggable.classList.remove("dragging");
-            });
+        document.body.addEventListener('dragover', function(e) {
+            e.preventDefault(); // 드래그 오버 시 기본 동작 방지
         });
-    
-        containers.forEach(container => {
-            container.addEventListener("dragover", e => {
-                e.preventDefault();
-                const afterElement = getDragAfterElement(container, e.clientX);
-                const draggable = document.querySelector(".dragging");
-                const existingDraggable = container.querySelector(".draggable:not(.dragging)");
-                if (!existingDraggable) {
-                    if (afterElement === undefined) {
-                        container.appendChild(draggable);
-                    } else if (afterElement !== draggable) {
-                        container.insertBefore(draggable, afterElement.nextSibling);
-                    }
-                }
-            });
-        });
-    
-        function getDragAfterElement(container, x) {
-            const draggableElements = [
-                ...container.querySelectorAll(".draggable:not(.dragging)"),
-            ];
-    
-            return draggableElements.reduce(
-                (closest, child) => {
-                    const box = child.getBoundingClientRect();
-                    const offset = x - box.left - box.width / 2;
-                    if (offset < 0 && offset > closest.offset) {
-                        return { offset: offset, element: child };
-                    } else {
-                        return closest;
-                    }
-                },
-                { offset: Number.NEGATIVE_INFINITY },
-            ).element;
-        }
     </script>
 </body>
 </html>
