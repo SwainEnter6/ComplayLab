@@ -30,6 +30,7 @@
     <div class="lemon-box" id="box4"></div>
     <div class="lemon-box" id="box5"></div>
 </div>
+<button id="move-lemon-button">이미지 갯수대로 레몬 오른쪽으로 이동</button>
 <script>
     document.querySelectorAll('.draggable').forEach(img => {
         img.addEventListener('dragstart', dragStart);
@@ -104,6 +105,7 @@
 
     function updateLemonPosition() {
         const arrowRightCount = document.querySelectorAll('.container img[data-image="image2"]').length;
+        const arrowLeftCount = document.querySelectorAll('.container img[data-image="image2"]').length;
         // lemon-container 내의 레몬 이미지 오른쪽으로 한 칸씩 이동
         const lemonContainer = document.querySelector('.lemon-container');
         const lemonImages = lemonContainer.querySelectorAll('.lemon-box img');
@@ -112,11 +114,29 @@
             if (i < arrowRightCount) {
                 lemonImages[i].style.marginLeft = '134px'; // 오른쪽으로 한 칸씩 이동
             }
+            if( i < arrowLeftCount){
+                lemonImages[i].style.marginRight = '134px';
+            }
         }
     }
     // 페이지 로드 시에도 호출하여 초기 상태 설정
     updateLemonPosition();
 
+    document.addEventListener('DOMContentLoaded', function() {
+    const button = document.getElementById('move-lemon-button');
+    button.addEventListener('click', moveLemon);
+
+    function moveLemon() {
+        const lemonContainer = document.querySelector('.lemon-container');
+        const lemonImages = lemonContainer.querySelectorAll('.lemon-box img');
+
+        for (let i = lemonImages.length - 1; i >= 0; i--) {
+            const lemonImage = lemonImages[i];
+            const marginLeft = parseInt(lemonImage.style.marginLeft || 0);
+            lemonImage.style.marginLeft = (marginLeft + 124) + 'px';
+        }
+    }
+});
 </script>
 </body>
 </html>
