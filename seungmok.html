@@ -40,107 +40,94 @@
         <div class="target-box" id="box4"></div>
     </div>
 
+    
+
     <script>
-        // 드래그 가능한 이미지들에 대한 dragstart 이벤트 핸들러
-        document.querySelectorAll('.draggable').forEach(img => {
-            img.addEventListener('dragstart', dragStart);
+    document.querySelectorAll('.draggable').forEach(img => {
+        img.addEventListener('dragstart', dragStart);
+    });
+    
+    function dragStart(e) {
+        e.dataTransfer.setData('image/id', e.target.dataset.image);
+        e.dataTransfer.setData('source/id', e.target.parentElement.getAttribute('id') || 'source-box');
+        e.dataTransfer.setData('insideTargetBox', e.target.parentElement.classList.contains('target-box').toString());
+    }
+    
+    document.querySelectorAll('.target-box').forEach(box => {
+        box.addEventListener('dragover', (e) => {
+            e.preventDefault(); // 드래그 오버 이벤트의 기본 동작을 방지하여 드롭 이벤트를 허용
         });
-
-        // dragstart 이벤트 핸들러
-        function dragStart(event) {
-            event.dataTransfer.setData('image/id', event.target.dataset.image);
-            event.dataTransfer.setData('source/id', event.target.parentElement.getAttribute('id') || 'source-box');
-            event.dataTransfer.setData('insideTargetBox', event.target.parentElement.classList.contains('target-box').toString());
-        }
-
-        // 각 target-box에 대한 drop 이벤트 핸들러 추가
-        document.querySelectorAll('.target-box').forEach(box => {
-            box.addEventListener('dragover', (e) => {
-                e.preventDefault(); // 드래그 오버 이벤트의 기본 동작을 방지하여 드롭 이벤트를 허용
-            });
-
-            box.addEventListener('drop', (e) => {
-                e.preventDefault(); // 드롭 이벤트의 기본 동작을 방지
-
-                const imageId = e.dataTransfer.getData('image/id');
-                const sourceId = e.dataTransfer.getData('source/id');
-                const originalImage = document.querySelector(`img[data-image="${imageId}"]`);
-                const isImageFromAnotherBox = sourceId !== box.getAttribute('id');
-                const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
-
-                if (isImageFromAnotherBox) {
-                    let clonedImage;
-                    if (sourceId === 'source-box') {
-                        if (box.childNodes.length > 0) {
-                            box.removeChild(box.childNodes[0]);
-                        }
-                        clonedImage = originalImage.cloneNode(true);
-                        clonedImage.draggable = true;
-                        clonedImage.addEventListener('dragstart', dragStart);
-                    } else {
-                        clonedImage = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
-                    }
-
-                    if (box.childNodes.length > 0) {
-                        const existingImage = box.removeChild(box.childNodes[0]);
-                        document.querySelector(`#${sourceId}`).appendChild(existingImage);
-                    }
-
-                    clonedImage.addEventListener('click', function () {
-                        box.removeChild(clonedImage);
-                    });
-
-                    box.appendChild(clonedImage);
-
-                    // 모든 target-box에 하나 이상의 이미지가 있는지 확인하는 코드로 변경
-                    const allBoxesFilled = document.querySelectorAll('.target-box').every(targetBox => targetBox.childNodes.length > 0);
-
-                    // 이미지2가 모든 target-box에 들어간 경우에만 레몬을 움직임
-                    if (imageId === 'image2' && allBoxesFilled) {
-                        moveLemonImages();
-                    }
-                }
-            });
-        });
-
-        // 레몬 이미지를 레몬 박스로 이동시키는 함수
-        function moveLemonImages() {
-            const lemonBoxes = document.querySelectorAll('.lemon-box'); // 레몬 박스들
-            const lemonImage = document.querySelector('.lemon'); // 레몬 이미지
-
-            lemonBoxes.forEach((lemonBox, index) => {
-                const initialLeft = 50 + index * 150; // 초기 X 좌표
-                const targetX = initialLeft + 50; // 이동할 X 좌표 (현재는 50px 우측으로 이동)
-                const animation = setInterval(() => {
-                    if (initialLeft >= targetX) {
-                        clearInterval(animation);
-                    } else {
-                        initialLeft += 1; // 1px씩 이동
-                        lemonImage.style.left = initialLeft + 'px';
-                    }
-                }, 10);
-            });
-        }
-
-        // 드래그된 이미지가 외부로 드롭될 때 삭제하기 위한 로직 추가
-        document.body.addEventListener('drop', function(e) {
-            e.preventDefault(); // 기본 동작 방지
-
+    
+        box.addEventListener('drop', (e) => {
+            e.preventDefault(); // 드롭 이벤트의 기본 동작을 방지
+    
+            const imageId = e.dataTransfer.getData('image/id');
+            const sourceId = e.dataTransfer.getData('source/id');
+            const originalImage = document.querySelector(`img[data-image="${imageId}"]`);
+            const isImageFromAnotherBox = sourceId !== box.getAttribute('id');
             const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
-            if (insideTargetBox) {
-                const imageId = e.dataTransfer.getData('image/id');
-                const sourceId = e.dataTransfer.getData('source/id');
+    
+            if (isImageFromAnotherBox) {
+                let clonedImage;
+                if (sourceId === 'source-box') {
+                    if(box.childNodes.length > 0) {
+                        box.removeChild(box.childNodes[0]);
+                    }
+                    clonedImage = originalImage.cloneNode(true);
+                    clonedImage.draggable = true;
+                    clonedImage.addEventListener('dragstart', dragStart);
+                } else {
+                    clonedImage = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
+                }
+    
+                if (box.childNodes.length > 0) {
+                    const existingImage = box.removeChild(box.childNodes[0]);
+                    document.querySelector(`#${sourceId}`).appendChild(existingImage);
+                }
+                
+                clonedImage.addEventListener('click', function() {
+                    box.removeChild(clonedImage); // 클릭 시 이미지 제거
+                });
+                box.appendChild(clonedImage);
+            }
 
-                const imageToRemove = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
-                if (imageToRemove) {
-                    imageToRemove.parentElement.removeChild(imageToRemove);
+            const isImage2 = imageId === 'image2';
+            if (isImage2) {
+                const lemon = document.querySelector('.lemon');
+                const lemonBox = document.querySelector('.lemon-box');
+
+                if (lemon && lemonBox) {
+                    // 이미 lemon이 lemon-box 안에 있는지 확인
+                    const lemonInBox = lemonBox.contains(lemon);
+
+                    // lemon을 lemon-box 안에 넣기
+                    if (!lemonInBox) {
+                        lemonBox.appendChild(lemon);
+                    }
                 }
             }
         });
+    });
 
-        document.body.addEventListener('dragover', function(e) {
-            e.preventDefault(); // 드래그 오버 시 기본 동작 방지
-        });
+    // 드래그된 이미지가 외부로 드롭될 때 삭제하기 위한 로직 추가
+    document.body.addEventListener('drop', function(e) {
+        e.preventDefault(); // 기본 동작 방지
+
+        const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
+        if (insideTargetBox) {
+            const imageId = e.dataTransfer.getData('image/id');
+            const sourceId = e.dataTransfer.getData('source/id');
+            
+            const imageToRemove = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
+            if (imageToRemove) {
+                imageToRemove.parentElement.removeChild(imageToRemove);
+            }
+        }
+    });
+
+    document.body.addEventListener('dragover', function(e) {
+        e.preventDefault(); // 드래그 오버 시 기본 동작 방지
+    });
     </script>
 </body>
 </html>
