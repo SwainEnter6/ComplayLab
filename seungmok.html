@@ -48,16 +48,19 @@
         
         // 모든 target-box에 image2가 있는지 확인
         const targetBoxes = document.querySelectorAll('.target-box');
-        let allTargetBoxesFilled = true;
+        let allImage2 = true;
+        let image1Count = 0;
+
         targetBoxes.forEach(box => {
             if (box.childNodes.length === 0 || box.childNodes[0].getAttribute('data-image') !== 'image2') {
-                allTargetBoxesFilled = false;
-                return;
+                allImage2 = false;
+            } else if (box.childNodes[0].getAttribute('data-image') === 'image1') {
+                image1Count++;
             }
         });
 
-        if (!allTargetBoxesFilled) {
-            alert('모든 칸에 이미지를 채워주세요!');
+        if (!allImage2 || image1Count > 0) {
+            alert('정답이 아닙니다.');
             return;
         }
 
