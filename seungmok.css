@@ -114,24 +114,25 @@ body > div > img {
 .lemon-img {
     width: 90px;
     height: 90px;
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     /* display: inline-block; */
-    margin-right: 199px;
+    margin-left: 60px;
+    margin-right: 150px;
     vertical-align: top;
     position: relative;
-    top: 35%;
+    top: 400px;
     left: 10;
 }
 
 .lemon-box {
     width: 90px;
     height: 90px;
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     /* display: inline-block; */
     margin-right: 90px;
     /* vertical-align: top; */
     position: relative;
-    top: 700px;
+    top: 440px;
     left: -30px;
 }
 

@@ -69,8 +69,8 @@
             const targetBox = document.querySelector(`#lemon${lemonIndex}`);
             const targetBoxRect = targetBox.getBoundingClientRect();
             const lemonImgRect = lemonImg.getBoundingClientRect();
-            const deltaX = targetBoxRect.left - lemonImgRect.left + 184; // 204px 이동
-
+            const deltaX = targetBoxRect.left - lemonImgRect.left + 160;
+ 
             lemonImg.style.transition = 'transform 1s ease-in-out';
             lemonImg.style.transform = `translateX(${deltaX}px)`;
 
