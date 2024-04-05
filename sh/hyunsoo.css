@@ -1,97 +1,59 @@
+body{
+    
+  z-index: -1;
+position: relative;
+}
 body > div:nth-child(1) {
-    width: 1040px; 
-    height: 720px; 
-    border: 1px solid red;
+  position:absolute;
+  width: 1040px; 
+  height: 720px; 
+  border: 1px solid red;
+  z-index: 1;
 
 }
 
 body > div:nth-child(2) {
-    width: 1040px; 
-    height: 720px; 
-    border: 1px solid blue;
+  position:absolute;
+  width: 1040px; 
+  height: 720px; 
+  border: 1px solid blue;
+  z-index: 2;
 }
 
 body > div:nth-child(3){
-    width: 1040px; 
-    height: 720px; 
-    border: 1px solid green;
+  position:absolute;
+  width: 1040px; 
+  height: 720px; 
+  border: 1px solid green;
+  z-index: 3;
 }
 
 
 .fdiv2 div > .lemon{
-    width: 150px; 
-    height: 200px; 
+  width: 150px; 
+  height: 200px; 
 }
 
 .fdiv3 div > img {
-    width: 80px; 
-    height: 80px; 
+  width: 80px; 
+  height: 80px; 
 }
 
 
 body > div > img {
-    width: 1040px; 
-    height: 720px; 
+  width: 1040px; 
+  height: 720px; 
 
 }
-.fdiv3 .mouse-container {
-    display: flex;
+.container {
+  width: 500px;
+  height: 120px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #b5c1dc57;
+  border-radius: 8px;
 }
-.fdiv3 .mouse-container .container {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 30px;
-}
-.fdiv3 .container {
-    text-align: center;
-    width: 480px;
-    height: 120px;
-    margin: 10px;
-    padding: 10px;
-    background-color: #b5c1dc57;
-    border-radius: 8px;
-}
-.fdiv3 .container img {
-    text-align: center;
-    margin: 10px;
-}
-body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .fdiv1, .fdiv2, .fdiv3 {
-    width: 33.33%;
-    height: 100vh;
-  }
-  
-  .fdiv2 .draggable {
-    margin: 10px;
-  }
-  
-  .container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    height: 100px;
-  }
-  
-  .container img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .dragging {
-    opacity: 0.5;
-  }
 
-.animated {
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .container:hover {
-    background-color: #ccc;
-  }
-  
-  .container.hovered {
-    background-color: #ddd;
-  }
+.container > img {
+  margin: 20px;
+}

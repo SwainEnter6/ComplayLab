@@ -2,64 +2,115 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>드래그 앤 드롭</title>
-    <link rel="stylesheet" href="hyunsoo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="seungmok.css">
 </head>
 <body>
 
-<div id="source-box"> 
-    <!-- 드래그 가능한 이미지들 -->
-    <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true" data-image="image1">
-    <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true" data-image="image2">
-</div>
-
-<!-- 드롭 타겟이 될 박스들 -->
-<div class="container">
-    <div class="target-box" id="box1"></div>
-    <div class="target-box" id="box2"></div>
-    <div class="target-box" id="box3"></div>
-    <div class="target-box" id="box4"></div>
-</div>
-
-<div class="lemon-container">
-    <div class="lemon-box" id="box1">
-        <img src="./imgs/lemon.png" alt="lemon">
+    <div class="fdiv1">
+        <img src="./imgs/main.png" alt="mainimg">
     </div>
-    <div class="lemon-box" id="box2"></div>
-    <div class="lemon-box" id="box3"></div>
-    <div class="lemon-box" id="box4"></div>
-    <div class="lemon-box" id="box5"></div>
-</div>
-<button id="move-lemon-button">이미지 갯수대로 레몬 오른쪽으로 이동</button>
-<script>
+
+    <div class="fdiv2">
+        <div class="lemon-img">
+            <img class="lemon" src="./imgs/lemon.png">
+        </div>
+        <div class="lemon-box" id="lemon1"></div>
+        <div class="lemon-box" id="lemon2"></div>
+        <div class="lemon-box" id="lemon3"></div>
+    </div>
+
+    <div class="fdiv3">
+
+        <div id="source-box"> 
+            <!-- 드래그 가능한 이미지들 -->
+            <img src="./imgs/arrowleft2.jpg" class="draggable" draggable="true" data-image="image1">
+            <img src="./imgs/arrowright2.jpg" class="draggable" draggable="true" data-image="image2">
+        </div>
+        
+        <!-- 드롭 타겟이 될 박스들 -->
+        <div class="target-box" id="box1"></div>
+        <div class="target-box" id="box2"></div>
+        <div class="target-box" id="box3"></div>
+        <div class="target-box" id="box4"></div>
+
+        <div class="button-box">
+            <button onclick="doAction()">click me</button>
+        </div>
+    </div>
+
+    <script>
+    let lemonIndex = 1; // 레몬 이미지 인덱스 초기값
+
+    function doAction() {
+        const lemonImg = document.querySelector('.lemon-img img');
+        
+        // 모든 target-box에 image2가 있는지 확인
+        const targetBoxes = document.querySelectorAll('.target-box');
+        let allImage2 = true;
+        let image1Count = 0;
+
+        targetBoxes.forEach(box => {
+            if (box.childNodes.length === 0 || box.childNodes[0].getAttribute('data-image') !== 'image2') {
+                allImage2 = false;
+            } else if (box.childNodes[0].getAttribute('data-image') === 'image1') {
+                image1Count++;
+            }
+        });
+
+        if (!allImage2 || image1Count > 0) {
+            alert('정답이 아닙니다.');
+            return;
+        }
+
+        // 레몬 이미지를 204px씩 3번 이동
+        for (let i = 0; i < 3; i++) {
+            const targetBox = document.querySelector(`#lemon${lemonIndex}`);
+            const targetBoxRect = targetBox.getBoundingClientRect();
+            const lemonImgRect = lemonImg.getBoundingClientRect();
+            const deltaX = targetBoxRect.left - lemonImgRect.left + 184; // 204px 이동
+
+            lemonImg.style.transition = 'transform 1s ease-in-out';
+            lemonImg.style.transform = `translateX(${deltaX}px)`;
+
+            lemonIndex++;
+
+            // 마지막 이미지에 도달하면 반복 종료
+            if (lemonIndex > 3) {
+                break;
+            }
+        }
+    }
+
     document.querySelectorAll('.draggable').forEach(img => {
         img.addEventListener('dragstart', dragStart);
     });
-    
+
     function dragStart(e) {
         e.dataTransfer.setData('image/id', e.target.dataset.image);
         e.dataTransfer.setData('source/id', e.target.parentElement.getAttribute('id') || 'source-box');
         e.dataTransfer.setData('insideTargetBox', e.target.parentElement.classList.contains('target-box').toString());
     }
-    
+
     document.querySelectorAll('.target-box').forEach(box => {
         box.addEventListener('dragover', (e) => {
             e.preventDefault(); // 드래그 오버 이벤트의 기본 동작을 방지하여 드롭 이벤트를 허용
         });
-    
+
         box.addEventListener('drop', (e) => {
             e.preventDefault(); // 드롭 이벤트의 기본 동작을 방지
-    
+
             const imageId = e.dataTransfer.getData('image/id');
             const sourceId = e.dataTransfer.getData('source/id');
             const originalImage = document.querySelector(`img[data-image="${imageId}"]`);
             const isImageFromAnotherBox = sourceId !== box.getAttribute('id');
             const insideTargetBox = e.dataTransfer.getData('insideTargetBox') === 'true';
-    
+
             if (isImageFromAnotherBox) {
                 let clonedImage;
                 if (sourceId === 'source-box') {
-                    if(box.childNodes.length > 0) {
+                    if (box.childNodes.length > 0) {
                         box.removeChild(box.childNodes[0]);
                     }
                     clonedImage = originalImage.cloneNode(true);
@@ -68,18 +119,17 @@
                 } else {
                     clonedImage = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
                 }
-    
+
                 if (box.childNodes.length > 0) {
                     const existingImage = box.removeChild(box.childNodes[0]);
                     document.querySelector(`#${sourceId}`).appendChild(existingImage);
                 }
-                
+
                 clonedImage.addEventListener('click', function() {
                     box.removeChild(clonedImage); // 클릭 시 이미지 제거
                 });
                 box.appendChild(clonedImage);
             }
-            updateLemonPosition();
         });
     });
 
@@ -91,7 +141,7 @@
         if (insideTargetBox) {
             const imageId = e.dataTransfer.getData('image/id');
             const sourceId = e.dataTransfer.getData('source/id');
-            
+
             const imageToRemove = document.querySelector(`#${sourceId} img[data-image="${imageId}"]`);
             if (imageToRemove) {
                 imageToRemove.parentElement.removeChild(imageToRemove);
@@ -102,41 +152,6 @@
     document.body.addEventListener('dragover', function(e) {
         e.preventDefault(); // 드래그 오버 시 기본 동작 방지
     });
-
-    function updateLemonPosition() {
-        const arrowRightCount = document.querySelectorAll('.container img[data-image="image2"]').length;
-        const arrowLeftCount = document.querySelectorAll('.container img[data-image="image2"]').length;
-        // lemon-container 내의 레몬 이미지 오른쪽으로 한 칸씩 이동
-        const lemonContainer = document.querySelector('.lemon-container');
-        const lemonImages = lemonContainer.querySelectorAll('.lemon-box img');
-
-        for (let i = 0; i < lemonImages.length; i++) {
-            if (i < arrowRightCount) {
-                lemonImages[i].style.marginLeft = '134px'; // 오른쪽으로 한 칸씩 이동
-            }
-            if( i < arrowLeftCount){
-                lemonImages[i].style.marginRight = '134px';
-            }
-        }
-    }
-    // 페이지 로드 시에도 호출하여 초기 상태 설정
-    updateLemonPosition();
-
-    document.addEventListener('DOMContentLoaded', function() {
-    const button = document.getElementById('move-lemon-button');
-    button.addEventListener('click', moveLemon);
-
-    function moveLemon() {
-        const lemonContainer = document.querySelector('.lemon-container');
-        const lemonImages = lemonContainer.querySelectorAll('.lemon-box img');
-
-        for (let i = lemonImages.length - 1; i >= 0; i--) {
-            const lemonImage = lemonImages[i];
-            const marginLeft = parseInt(lemonImage.style.marginLeft || 0);
-            lemonImage.style.marginLeft = (marginLeft + 124) + 'px';
-        }
-    }
-});
-</script>
+    </script>
 </body>
 </html>

@@ -1,17 +1,136 @@
+
+@media only screen and (min-width: 768px) {
+    .fdiv1 {
+        width: 50%;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .fdiv1 {
+        width: 90%;
+        height: auto; 
+    }
+}
+
+body > div:nth-child(1) {
+    width: 1080px; 
+    height: 720px; 
+    /* border: 1px solid red; */
+
+}
+
+body > div:nth-child(2) {
+    width: 1040px; 
+    height: 720px; 
+    /* border: 1px solid blue; */
+}
+
+body > div:nth-child(3){
+    width: 1040px; 
+    height: 720px; 
+    /* border: 1px solid green; */
+}
+
+
+.fdiv1 {
+    background-size: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.fdiv2 {
+    background-size: 100%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,16%);
+    z-index: 2;
+}
+
+.fdiv3 {
+    background-size: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+.fdiv2 div > .lemon{
+    width: 150px; 
+    height: 200px; 
+}
+
+.fdiv3 div > img {
+    width: 80px; 
+    height: 80px; 
+}
+
+
+body > div > img {
+    width: 1040px; 
+    height: 720px; 
+
+}
+
 #source-box {
-    border: 2px dashed gray;
+    /* border: 2px dashed gray; */
     padding: 10px;
     margin-bottom: 20px;
+    position: relative;
+    left: 5%;
+    top: 62%;
 }
 
 .target-box {
-    width: 100px;
-    height: 100px;
-    border: 2px solid blue;
+    width: 80px;
+    height: 80px;
+    /* border: 2px solid blue; */
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 7px;
     vertical-align: top;
     position: relative;
+    top: 47%;
+    left: 35.2%;
+    z-index: 2;
+}
+
+.button-box {
+    position: relative;
+    top: 55%;
+    left: 11%;
+}
+.fdiv2 {
+    display: flex;
+    position: relative; /* 레몬 이미지의 위치를 조정하기 위해 필요 */
+}
+
+
+.lemon-img {
+    width: 90px;
+    height: 90px;
+    border: 2px solid blue;
+    display: inline-block;
+    margin-right: 199px;
+    vertical-align: top;
+    position: relative;
+    top: 5%;
+    left: 10;
+}
+
+.lemon-box {
+    width: 90px;
+    height: 90px;
+    border: 2px solid blue;
+    /* display: inline-block; */
+    margin-right: 90px;
+    /* vertical-align: top; */
+    position: relative;
+    top: 700px;
+    left: -30px;
 }
 
 img.draggable {
@@ -20,12 +139,7 @@ img.draggable {
     cursor: move;
 }
 
-.lemon-box{
-    width: 100px;
-    height: 100px;
-    border: 2px solid blue;
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: top;
-    position: relative;
+.lemon{
+    width: 30px;
 }
+
